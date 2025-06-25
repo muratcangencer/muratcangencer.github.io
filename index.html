@@ -1,7 +1,850 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Medicals - Patient Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        .nav-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-blue-600 font-bold text-xl">C</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Crystal Medicals</h1>
+                        <p class="text-blue-100 text-sm">Patient Management System</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm">MURAT CAN GENCER</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md border-b">
+        <div class="container mx-auto px-4">
+            <div class="flex space-x-1 overflow-x-auto">
+                <button class="nav-button active px-4 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-t-lg transition-colors whitespace-nowrap" onclick="showSection('patient-registration')">
+                    Patient Registration
+                </button>
+                <button class="nav-button px-4 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-t-lg transition-colors whitespace-nowrap" onclick="showSection('appointment-booking')">
+                    Book Appointment
+                </button>
+                <button class="nav-button px-4 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-t-lg transition-colors whitespace-nowrap" onclick="showSection('work-permit')">
+                    Work Permit Medical
+                </button>
+                <button class="nav-button px-4 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-t-lg transition-colors whitespace-nowrap" onclick="showSection('test-order')">
+                    Medical Tests
+                </button>
+                <button class="nav-button px-4 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-t-lg transition-colors whitespace-nowrap" onclick="showSection('medical-record')">
+                    Medical Records
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Patient Registration Form -->
+        <div id="patient-registration" class="form-section active">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Patient Registration</h2>
+                </div>
+                
+                <form id="patientForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="patient_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth *</label>
+                            <input type="date" id="date_of_birth" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Gender *</label>
+                            <select id="gender" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Patient Type *</label>
+                            <select id="patient_type" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="toggleBusinessClient()">
+                                <option value="">Select Type</option>
+                                <option value="Individual">Individual Patient</option>
+                                <option value="Corporate">Corporate Employee</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                            <input type="tel" id="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Address *</label>
+                        <textarea id="address" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <div id="business_client_section" class="hidden">
+                        <div class="bg-blue-50 p-4 rounded-md">
+                            <h3 class="font-medium text-gray-800 mb-3">Corporate Information</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                                    <select id="business_client_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">Select Company</option>
+                                        <option value="1">Maldivian Airlines</option>
+                                        <option value="2">Villa Group</option>
+                                        <option value="3">Ooredoo Maldives</option>
+                                        <option value="4">Bank of Maldives</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Employee ID</label>
+                                    <input type="text" id="employee_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                            Register Patient
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Appointment Booking Form -->
+        <div id="appointment-booking" class="form-section">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Book Appointment</h2>
+                </div>
+
+                <form id="appointmentForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Patient *</label>
+                            <select id="appointment_patient_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Patient</option>
+                                <option value="1">Ahmed Hassan - ID: P001</option>
+                                <option value="2">Fatima Ali - ID: P002</option>
+                                <option value="3">Mohamed Rashid - ID: P003</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Appointment Type *</label>
+                            <select id="appointment_type" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Type</option>
+                                <option value="General Consultation">General Consultation</option>
+                                <option value="Work Permit Medical">Work Permit Medical</option>
+                                <option value="Medical Test">Medical Test</option>
+                                <option value="Follow-up">Follow-up Visit</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Doctor</label>
+                            <select id="doctor_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="updateAvailableSlots()">
+                                <option value="">Any Available Doctor</option>
+                                <option value="1">Dr. Ibrahim Waheed - General Medicine</option>
+                                <option value="2">Dr. Aisha Mohamed - General Medicine</option>
+                                <option value="3">Dr. Hassan Ali - General Medicine</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Date *</label>
+                            <input type="date" id="appointment_date" required min="" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="updateAvailableSlots()">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Available Time Slots *</label>
+                        <div id="time_slots" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <button type="button" class="time-slot px-4 py-2 border border-gray-300 rounded-md text-sm hover:border-blue-500 hover:bg-blue-50 transition-colors" data-time="09:00">
+                                9:00 AM
+                            </button>
+                            <button type="button" class="time-slot px-4 py-2 border border-gray-300 rounded-md text-sm hover:border-blue-500 hover:bg-blue-50 transition-colors" data-time="10:00">
+                                10:00 AM
+                            </button>
+                            <button type="button" class="time-slot px-4 py-2 border border-gray-300 rounded-md text-sm hover:border-blue-500 hover:bg-blue-50 transition-colors" data-time="11:00">
+                                11:00 AM
+                            </button>
+                            <button type="button" class="time-slot px-4 py-2 border border-gray-300 rounded-md text-sm hover:border-blue-500 hover:bg-blue-50 transition-colors" data-time="14:00">
+                                2:00 PM
+                            </button>
+                            <button type="button" class="time-slot px-4 py-2 border border-gray-300 rounded-md text-sm hover:border-blue-500 hover:bg-blue-50 transition-colors" data-time="15:00">
+                                3:00 PM
+                            </button>
+                            <button type="button" class="time-slot px-4 py-2 border border-gray-300 rounded-md text-sm hover:border-blue-500 hover:bg-blue-50 transition-colors" data-time="16:00">
+                                4:00 PM
+                            </button>
+                        </div>
+                        <input type="hidden" id="selected_time" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Additional Notes</label>
+                        <textarea id="appointment_notes" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Any specific concerns or requirements..."></textarea>
+                    </div>
+
+                    <div class="bg-yellow-50 p-4 rounded-md">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-yellow-600 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-medium text-yellow-800">Appointment Reminder</h4>
+                                <p class="text-sm text-yellow-700 mt-1">
+                                    You will receive SMS and email reminders 24 hours before your appointment. Please arrive 15 minutes early.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                            Book Appointment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Work Permit Medical Form -->
+        <div id="work-permit" class="form-section">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Work Permit Medical Certificate</h2>
+                </div>
+
+                <form id="workPermitForm" class="space-y-6">
+                    <div class="bg-blue-50 p-4 rounded-md mb-6">
+                        <h3 class="font-medium text-blue-800 mb-2">Required Documents Checklist</h3>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 rounded" required>
+                                <span class="text-sm text-blue-700">Valid Passport</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 rounded" required>
+                                <span class="text-sm text-blue-700">Visa Copy</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 rounded" required>
+                                <span class="text-sm text-blue-700">Passport Photos (2)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 rounded" required>
+                                <span class="text-sm text-blue-700">Previous Medical Reports</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Employee/Patient *</label>
+                            <select id="wp_patient_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Employee</option>
+                                <option value="1">Ahmed Hassan - Maldivian Airlines</option>
+                                <option value="2">Fatima Ali - Villa Group</option>
+                                <option value="3">Mohamed Rashid - Ooredoo Maldives</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Employer Company *</label>
+                            <select id="wp_business_client_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Company</option>
+                                <option value="1">Maldivian Airlines</option>
+                                <option value="2">Villa Group</option>
+                                <option value="3">Ooredoo Maldives</option>
+                                <option value="4">Bank of Maldives</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Examining Doctor *</label>
+                            <select id="wp_doctor_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Doctor</option>
+                                <option value="1">Dr. Ibrahim Waheed</option>
+                                <option value="2">Dr. Aisha Mohamed</option>
+                                <option value="3">Dr. Hassan Ali</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Valid Until *</label>
+                            <input type="date" id="expiry_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Required Medical Tests</label>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50">
+                                <input type="checkbox" class="mr-3 rounded" checked>
+                                <div>
+                                    <span class="font-medium text-sm">Blood Test</span>
+                                    <p class="text-xs text-gray-500">Complete Blood Count</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50">
+                                <input type="checkbox" class="mr-3 rounded" checked>
+                                <div>
+                                    <span class="font-medium text-sm">Chest X-Ray</span>
+                                    <p class="text-xs text-gray-500">Tuberculosis Screening</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50">
+                                <input type="checkbox" class="mr-3 rounded" checked>
+                                <div>
+                                    <span class="font-medium text-sm">Urine Test</span>
+                                    <p class="text-xs text-gray-500">General Examination</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-md hover:bg-gray-50">
+                                <input type="checkbox" class="mr-3 rounded">
+                                <div>
+                                    <span class="font-medium text-sm">ECG</span>
+                                    <p class="text-xs text-gray-500">Heart Function</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Medical Status</label>
+                        <select id="medical_status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Pending Medical Review</option>
+                            <option value="Fit for Work">Fit for Work</option>
+                            <option value="Fit with Restrictions">Fit with Restrictions</option>
+                            <option value="Unfit for Work">Unfit for Work</option>
+                            <option value="Requires Further Assessment">Requires Further Assessment</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-green-50 p-4 rounded-md">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-600 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-medium text-green-800">Certificate Processing</h4>
+                                <p class="text-sm text-green-700 mt-1">
+                                    The certificate will be available for download within 24-48 hours after medical review completion. Your employer will be notified automatically.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+                            Submit for Review
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Medical Test Order Form -->
+        <div id="test-order" class="form-section">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Medical Test Order</h2>
+                </div>
+
+                <form id="testOrderForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Patient *</label>
+                            <select id="test_patient_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Patient</option>
+                                <option value="1">Ahmed Hassan - ID: P001</option>
+                                <option value="2">Fatima Ali - ID: P002</option>
+                                <option value="3">Mohamed Rashid - ID: P003</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ordering Doctor *</label>
+                            <select id="test_doctor_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Doctor</option>
+                                <option value="1">Dr. Ibrahim Waheed - General Medicine</option>
+                                <option value="2">Dr. Aisha Mohamed - General Medicine</option>
+                                <option value="3">Dr. Hassan Ali - General Medicine</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Medical Tests *</label>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="mt-1 mr-3 rounded" name="test_catalog" value="1">
+                                <div>
+                                    <span class="font-medium text-sm">Complete Blood Count (CBC)</span>
+                                    <p class="text-xs text-gray-500 mt-1">Duration: 30 mins</p>
+                                    <p class="text-xs text-blue-600 font-medium">MVR 150</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="mt-1 mr-3 rounded" name="test_catalog" value="2">
+                                <div>
+                                    <span class="font-medium text-sm">Chest X-Ray</span>
+                                    <p class="text-xs text-gray-500 mt-1">Duration: 15 mins</p>
+                                    <p class="text-xs text-blue-600 font-medium">MVR 200</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="mt-1 mr-3 rounded" name="test_catalog" value="3">
+                                <div>
+                                    <span class="font-medium text-sm">Urine Analysis</span>
+                                    <p class="text-xs text-gray-500 mt-1">Duration: 20 mins</p>
+                                    <p class="text-xs text-blue-600 font-medium">MVR 75</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="mt-1 mr-3 rounded" name="test_catalog" value="4">
+                                <div>
+                                    <span class="font-medium text-sm">Blood Sugar (Fasting)</span>
+                                    <p class="text-xs text-gray-500 mt-1">Duration: 10 mins</p>
+                                    <p class="text-xs text-blue-600 font-medium">MVR 50</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="mt-1 mr-3 rounded" name="test_catalog" value="5">
+                                <div>
+                                    <span class="font-medium text-sm">ECG</span>
+                                    <p class="text-xs text-gray-500 mt-1">Duration: 15 mins</p>
+                                    <p class="text-xs text-blue-600 font-medium">MVR 100</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="mt-1 mr-3 rounded" name="test_catalog" value="6">
+                                <div>
+                                    <span class="font-medium text-sm">Hepatitis B & C</span>
+                                    <p class="text-xs text-gray-500 mt-1">Duration: 25 mins</p>
+                                    <p class="text-xs text-blue-600 font-medium">MVR 300</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Priority Level</label>
+                            <select id="test_priority" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="Normal">Normal</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="STAT">STAT (Immediate)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Date</label>
+                            <input type="date" id="test_order_date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Special Instructions</label>
+                        <textarea id="test_special_instructions" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Any special preparation instructions or clinical notes..."></textarea>
+                    </div>
+
+                    <div class="bg-amber-50 p-4 rounded-md">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-amber-600 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-medium text-amber-800">Test Preparation Guidelines</h4>
+                                <ul class="text-sm text-amber-700 mt-1 space-y-1">
+                                    <li>• Fasting tests require 8-12 hours without food</li>
+                                    <li>• Bring valid ID and previous test results if available</li>
+                                    <li>• Results will be available within 24-48 hours</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+                            Clear Selection
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition-colors">
+                            Submit Test Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Medical Record Form -->
+        <div id="medical-record" class="form-section">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Medical Record Entry</h2>
+                </div>
+
+                <form id="medicalRecordForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Patient *</label>
+                            <select id="record_patient_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Patient</option>
+                                <option value="1">Ahmed Hassan - ID: P001</option>
+                                <option value="2">Fatima Ali - ID: P002</option>
+                                <option value="3">Mohamed Rashid - ID: P003</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Attending Doctor *</label>
+                            <select id="record_doctor_id" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Doctor</option>
+                                <option value="1">Dr. Ibrahim Waheed</option>
+                                <option value="2">Dr. Aisha Mohamed</option>
+                                <option value="3">Dr. Hassan Ali</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Visit Date *</label>
+                            <input type="date" id="visit_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Associated Appointment</label>
+                            <select id="record_appointment_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Appointment</option>
+                                <option value="1">2024-01-15 - 10:00 AM - General Consultation</option>
+                                <option value="2">2024-01-16 - 2:00 PM - Work Permit Medical</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Patient Symptoms *</label>
+                        <textarea id="symptoms" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe patient's presenting symptoms..."></textarea>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Blood Pressure</label>
+                            <input type="text" id="blood_pressure" placeholder="120/80" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Temperature (°C)</label>
+                            <input type="number" id="temperature" step="0.1" placeholder="36.5" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Heart Rate</label>
+                            <input type="number" id="heart_rate" placeholder="70" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
+                            <input type="number" id="weight" step="0.1" placeholder="70.0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Clinical Diagnosis *</label>
+                        <textarea id="diagnosis" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Primary and secondary diagnoses..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Treatment Notes & Plan *</label>
+                        <textarea id="treatment_notes" required rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Treatment provided and ongoing care plan..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Doctor Recommendations</label>
+                        <textarea id="doctor_recommendations" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Lifestyle recommendations, follow-up instructions..."></textarea>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Follow-up Required?</label>
+                            <select id="follow_up_required" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="false">No Follow-up Required</option>
+                                <option value="true">Follow-up Required</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Record Status</label>
+                            <select id="record_status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="Active">Active</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Under Review">Under Review</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-md">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-medium text-blue-800">AASANDA Integration</h4>
+                                <p class="text-sm text-blue-700 mt-1">
+                                    This medical record will be automatically synchronized with the government AASANDA system for comprehensive patient care continuity.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                            Save Medical Record
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success/Error Messages -->
+    <div id="message-container" class="fixed top-4 right-4 z-50"></div>
+
+    <script>
+        // Set minimum date to today for all date inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointment_date').min = today;
+            document.getElementById('visit_date').value = today;
+            
+            // Set expiry date minimum to today + 1 year
+            const nextYear = new Date();
+            nextYear.setFullYear(nextYear.getFullYear() + 1);
+            document.getElementById('expiry_date').min = today;
+            document.getElementById('expiry_date').value = nextYear.toISOString().split('T')[0];
+        });
+
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Business client toggle
+        function toggleBusinessClient() {
+            const patientType = document.getElementById('patient_type').value;
+            const businessSection = document.getElementById('business_client_section');
+            
+            if (patientType === 'Corporate') {
+                businessSection.classList.remove('hidden');
+                document.getElementById('business_client_id').required = true;
+            } else {
+                businessSection.classList.add('hidden');
+                document.getElementById('business_client_id').required = false;
+                document.getElementById('business_client_id').value = '';
+            }
+        }
+
+        // Time slot selection
+        document.querySelectorAll('.time-slot').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from all time slots
+                document.querySelectorAll('.time-slot').forEach(slot => {
+                    slot.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                    slot.classList.add('border-gray-300');
+                });
+                
+                // Add selected class to clicked slot
+                this.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                this.classList.remove('border-gray-300');
+                
+                // Set hidden input value
+                document.getElementById('selected_time').value = this.dataset.time;
+            });
+        });
+
+        // Update available slots (placeholder function)
+        function updateAvailableSlots() {
+            // This would normally make an API call to get available slots
+            console.log('Updating available slots...');
+        }
+
+        // Show success/error messages
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('message-container');
+            const messageDiv = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+            messageDiv.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg mb-4 transform transition-all duration-300 translate-x-full`;
+            messageDiv.textContent = message;
+            
+            container.appendChild(messageDiv);
+            
+            // Animate in
+            setTimeout(() => {
+                messageDiv.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                messageDiv.classList.add('translate-x-full');
+                setTimeout(() => {
+                    container.removeChild(messageDiv);
+                }, 300);
+            }, 5000);
+        }
+
+        // Form submissions
+        document.getElementById('patientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simulate form submission
+            setTimeout(() => {
+                showMessage('Patient registered successfully! Patient ID: P' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'));
+                this.reset();
+                document.getElementById('business_client_section').classList.add('hidden');
+            }, 1000);
+        });
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!document.getElementById('selected_time').value) {
+                showMessage('Please select a time slot', 'error');
+                return;
+            }
+            setTimeout(() => {
+                showMessage('Appointment booked successfully! Confirmation SMS will be sent shortly.');
+                this.reset();
+                document.getElementById('selected_time').value = '';
+                document.querySelectorAll('.time-slot').forEach(slot => {
+                    slot.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                    slot.classList.add('border-gray-300');
+                });
+            }, 1000);
+        });
+
+        document.getElementById('workPermitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            setTimeout(() => {
+                showMessage('Work Permit Medical application submitted for review. Certificate will be ready within 48 hours.');
+                this.reset();
+            }, 1000);
+        });
+
+        document.getElementById('testOrderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedTests = document.querySelectorAll('input[name="test_catalog"]:checked');
+            if (selectedTests.length === 0) {
+                showMessage('Please select at least one test', 'error');
+                return;
+            }
+            setTimeout(() => {
+                showMessage(`Test order submitted successfully for ${selectedTests.length} test(s). Results will be available within 24-48 hours.`);
+                this.reset();
+            }, 1000);
+        });
+
+        document.getElementById('medicalRecordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            setTimeout(() => {
+                showMessage('Medical record saved successfully and synchronized with AASANDA system.');
+                this.reset();
+                document.getElementById('visit_date').value = new Date().toISOString().split('T')[0];
+            }, 1000);
+        });
+
+        // Collect vital signs into a single field (simulating database storage)
+        function collectVitalSigns() {
+            const vitals = {
+                blood_pressure: document.getElementById('blood_pressure').value,
+                temperature: document.getElementById('temperature').value,
+                heart_rate: document.getElementById('heart_rate').value,
+                weight: document.getElementById('weight').value
+            };
+            return JSON.stringify(vitals);
+        }
+    </script>
 </body>
 </html>
